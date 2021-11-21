@@ -1,23 +1,37 @@
-﻿#include <iostream>
+#include <iostream>
+#include <string>
 using namespace std;
-int o;
-char* a = new char[o];
+int o,x;
+char* a = new char[o+1];
+double* b = new double[o];
 
-void input()
+
+void input(int v)
 {
-    cout << "Введите количество оценок:";
-    cin >> o;
-    cout << "Введите все оценки без пробелов:";
-    for (int i = 0; i < o; i++)
-    {
-        cin >> a[i];
+    if (v == 1) {
+        cout << "Введите количество оценок:";
+        cin >> o;
+        x = o;
+        for (int i = 0; i < o; i++)
+        {
+            cout << "Введите оценку " << i+1 << ": ";
+            cin >> b[i];
+        }
+        
     }
-    
+    else if(v == 0) {
+        string x;
+        cout << "Введите все оценки без пробелов:";
+        cin >> x;
+        o = x.length();
+        strcpy(a, x.c_str());
+    }
 }
 void math()
 {
     int five, fore, three, two;
     five = fore = three = two = 0;
+    bool k = false;
     for (int i = 0; i < o; i++)
     {
         switch (a[i]) {
@@ -34,24 +48,43 @@ void math()
             two++;
             break;
         default:
-            cout << "Ошибка: число не является областью определения [2;5]";
+            k = true;
             break;
         }
     }
-
-    five *= 100;
-    fore *= 50;
-    three *= 50;
-    two *= 100;
-    int sum =  fore + five - two - three;
-    cout << sum;
+    if (k == true) {
+        cout << "Ошибка: число не является областью определения [2;5]";
+    }
+    else {
+        five *= 100;
+        fore *= 50;
+        three *= 50;
+        two *= 100;
+        int sum = fore + five - two - three;
+        cout << "Итого: " << sum;
+    }
 }
+
 int main()
 {
-    input();
-    math();
-    delete[]a;
-    a = nullptr;
+    int q;
+    cout << "Что вы хотите сделать? 1 - Посчитать средний балл , 2 - узнать количество денег за треместр ";
+    cin >> q;
+    if (q == 1) {
+        input(1);
+        int sum = 0;
+        for (int i = 0; i < o; i++) {
+            
+            sum = sum + b[i];
+            
+        }
+        sum = sum / x;
+        cout << "Вш средний балл = " << sum  << endl;
+    }
+    else {
+        input(0);
+        math();
+    }
     return 0;
 }
 
